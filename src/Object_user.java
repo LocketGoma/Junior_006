@@ -6,12 +6,12 @@ public class Object_user implements Serializable {		// 유저 클래스.
 	 * 
 	 */
 	private static final long serialVersionUID = 8665071146922045683L;
-	private String name="";			//회원이름
-	private String phnum="";		//회원전번
-	private String birth="";		//회원생일
-	private int user_num=0;			//회원코드
-
-	private int use_count=0;
+	
+	 String name="";			//회원이름
+	 String phnum="";		//회원전번
+	 String birth="";		//회원생일
+	 int user_num=0;			//회원코드
+	 int use_count=0;
 
 	public String getName() {
 		return name;
