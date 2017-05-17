@@ -1,5 +1,7 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -46,6 +48,12 @@ public class Action_compound implements ActionListener, MenuListener {
 		// TODO 자동 생성된 메소드 스텁
 		
 	}
+
+
+		// TODO 자동 생성된 메소드 스텁
+		
+	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO 자동 생성된 메소드 스텁
@@ -60,7 +68,6 @@ public class Action_compound implements ActionListener, MenuListener {
 		}
 		
 	}
-	
 	
 }
 
@@ -137,4 +144,42 @@ class Action_mouse implements MouseListener{
 		
 	}
 	
+}
+
+class Action_key implements KeyListener{
+	UI_restaurant rest;			//바로 불러오기.
+	UI_Join join;				//Join 파트용. 얘만 다른 클래스니까.
+	Data_menu master;
+	Data_finder find;
+	
+	
+	Action_key (UI_restaurant rest){
+		this.rest=rest;
+	}
+	
+	
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO 자동 생성된 메소드 스텁
+		
+	}
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO 자동 생성된 메소드 스텁
+		if(e.getKeyCode()==KeyEvent.VK_ENTER){
+			System.out.println("?");
+			if(e.getSource()==rest.tf_find){
+				System.out.println("검색 시작");
+				find=new Data_finder(Integer.parseInt(rest.tf_find.getText()));
+//				Thread t = new Thread(find);
+				find.start();
+				System.out.println("검색 개시");				
+//				t.start();
+				System.out.println("검색 완료");				
+			}
+		}
+	}
+	@Override
+	public void keyTyped(KeyEvent e) {
+	}
 }

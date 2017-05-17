@@ -58,9 +58,11 @@ public class UI_restaurant extends JFrame {
 	
 		/*검색 파트*/
 	JFrame fm_find;
+	JTextField tf_find;
 	
 		/*삭제 파트*/
 	JFrame fm_delete;
+	JTextField tf_delete;
 	
 	public UI_restaurant(){
 		//this.set_join();    <- 얘가 작동함 = 액션리스너 문제임. :: 작동합니다 = 액션리스너 문제입니다.
@@ -189,10 +191,12 @@ public class UI_restaurant extends JFrame {
 	private void win_find(){
 		fm_find = new JFrame("고객 검색창");
 		JPanel pn_find = new JPanel();
-		JTextField tf_find = new JTextField(4);
+		tf_find = new JTextField(4);
 		JLabel lb_find = new JLabel("고객 번호  :: ");
 		fm_find.setSize(200, 70);
 		fm_find.setResizable(false);
+		
+		tf_find.addKeyListener(new Action_key(this));
 		
 		pn_find.add(lb_find);
 		pn_find.add(tf_find);
@@ -202,7 +206,7 @@ public class UI_restaurant extends JFrame {
 		fm_delete = new JFrame("삭제 화면");
 		fm_delete.setLayout(new BorderLayout());
 		JPanel pn_delete = new JPanel();
-		JTextField tf_delete = new JTextField(4);
+		tf_delete = new JTextField(4);
 		JLabel lb_delete = new JLabel("고객 번호  :: ");
 		JLabel lb_warning = new JLabel("경고 :: 삭제 시 되돌릴 수 없습니다.");
 		lb_warning.setForeground(Color.RED);
