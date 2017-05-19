@@ -40,7 +40,7 @@ public class Object_user implements Serializable {		// 유저 클래스.
 	public int getUse_count() {
 		return use_count;
 	}	
-	public void setUse_count() {
-		use_count++;
+	public void setUse_count(int use_count) {
+		this.use_count=use_count;
 	}	
 }

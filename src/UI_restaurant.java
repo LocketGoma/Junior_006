@@ -168,8 +168,8 @@ public class UI_restaurant extends JFrame {
 		bt_orderby = new JButton("주문하기");
 		bt_cancel = new JButton("주문취소");
 		
-		bt_orderby.addMouseListener(new Action_mouse(this));
-		bt_cancel.addMouseListener(new Action_mouse(this,master));
+		bt_orderby.addMouseListener(new Action_mouse(this,master));
+		bt_cancel.addMouseListener(new Action_mouse(this));
 		
 		
 		pn_button.add(bt_orderby);
@@ -217,14 +217,17 @@ public class UI_restaurant extends JFrame {
 		JLabel lb_delete = new JLabel("고객 번호  :: ");
 		JLabel lb_warning = new JLabel("경고 :: 삭제 시 되돌릴 수 없습니다.");
 		lb_warning.setForeground(Color.RED);
+		bbt_delete = new JButton("삭제");
 		fm_delete.setSize(220, 100);
 		fm_delete.setResizable(false);
 		
+		bbt_delete.addMouseListener(new Action_mouse(this));
 		
 		pn_delete.add(lb_delete);
 		pn_delete.add(tf_delete);
 		fm_delete.add("North",lb_warning);
 		fm_delete.add("Center", pn_delete);
+		fm_delete.add("South",bbt_delete);
 		
 	}
 	

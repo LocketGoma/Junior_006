@@ -94,7 +94,8 @@ class Action_mouse implements MouseListener{
 		System.out.println(e.getSource());
 		try{
 			if(e.getSource()==rest.bt_orderby){
-			
+			System.out.println("작동확인1");	
+			master.print_usertype(Integer.parseInt(rest.input_addr.getText()));
 			}
 		}
 		catch(NullPointerException ex){

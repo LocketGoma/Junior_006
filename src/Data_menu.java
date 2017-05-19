@@ -1,11 +1,15 @@
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 //내부 로직파트
 public class Data_menu {
 	UI_restaurant rest;			//바로 불러오기.
 	UI_Join join;				//Join 파트용. 얘만 다른 클래스니까.
-	Object_user temp_user;		//user 객체 temp
+	Object_user temp_user=null;		//user 객체 temp
 	Data_control fileio;
 	
 	private JFrame frm = new JFrame();		// 에러문구 출력용.
@@ -60,6 +64,7 @@ public class Data_menu {
 		//테스트구문
 		
 		fileio.file_write(temp_user);
+		temp_user=null;
 	}
 	
 	private boolean valid_phnum(String phnum){	//폰 번호 유효 검사. 다시 만들것.
@@ -92,6 +97,34 @@ public class Data_menu {
 		
 	}
 	
+	public void print_usertype(int code){
+		Object_user temp=null;
+		System.out.println("코드 확인"+code);
+		System.out.println("작동확인2");		
+		if (code!=0){
+		System.out.println("작동확인3");
+		fileio.file_find(code);
+		temp_user=fileio.getTemp_user();
+		System.out.println("작동확인4");		
+		if(temp_user!=null){
+			//사용자 정보 리턴
+			//temp=fileio.getTemp_user();
+			System.out.println("코드 확인"+code);
+			System.out.println("이용 회수:"+temp_user.getUse_count());
+
+			if(temp_user.getUse_count()==Data_control.bonus){
+				JOptionPane.showMessageDialog(frm, code+"번 고객님 주문이 정상적으로 처리되었습니다.\n"+code+"번 고객님 쿠폰이 발송되었습니다.", "주문안내", JOptionPane.PLAIN_MESSAGE);
+			}
+			else
+				JOptionPane.showMessageDialog(frm, code+"번 고객님 주문이 정상적으로 처리되었습니다.", "주문안내", JOptionPane.PLAIN_MESSAGE);
+			fileio.file_countplus(code);
+			
+		}
+		else
+			JOptionPane.showMessageDialog(frm, "에러:존재하지않는 사용자입니다.", "검색실패", JOptionPane.ERROR_MESSAGE);
+		}		
+		
+	}
 }
 
 //일단 멀티스레드 안쓰는거로 구현하고...
@@ -101,12 +134,17 @@ class Data_finder {
 	Data_control fileio;	//그래서 검색은 어떻게? <- 걍 무식하게 object 다 긁을건데!
 	int code;				//찾을 코드.
 	private JFrame frm = new JFrame();		// 안내문구 출력용.
+	private JFrame fr_print = new JFrame();
+	private JPanel pn_print;
+	private JTextArea ta_print;
+//	private JLabel lb_print;
+//	private JButton bt_print;
 	
 	Data_finder(){		
 	}
 	Data_finder(int code){
 		this.code=code;
-		fileio = new Data_control();
+		fileio = new Data_control(this);
 	}
 //	@Override
 //	public void run() {
@@ -119,14 +157,30 @@ class Data_finder {
 	public void start(){
 		JOptionPane.showMessageDialog(frm, "안내:검색중입니다.", "안내", JOptionPane.PLAIN_MESSAGE);		
 		this.finder();
+		
+		this.printer(fileio.getTemp_user());
 	}
 	private int finder(){
 		int postion=-1;				//몇번째에 저장되어있는가. <- 못 찾으면 -1리턴 = 에러
 		fileio.file_find(code);
 		
-		
 		return postion;
-		
+	}
+	public void printer(Object_user user){
+		pn_print = new JPanel();
+		ta_print = new JTextArea();
+		if (user!=null){
+			ta_print.append("이름:"+user.getName()+'\n');
+			ta_print.append("회원번호:"+user.getUser_num()+'\n');
+			ta_print.append("전화번호:"+user.getPhnum()+'\n');
+			ta_print.append("가입일:"+user.getBirth());			
+		}
+		else
+			ta_print.append("알림 : 존재하지 않는\n사용자입니다.");
+		fr_print.setSize(150, 120);
+		pn_print.add(ta_print);
+		fr_print.add(pn_print);
+		fr_print.setVisible(true);
 	}
 	
 	

@@ -3,7 +3,7 @@
  * main-->data_menu(메인 로직클래스)->[UI_rest]
  * 			ㄴData_control(데이터클래스) ㄴAction_compound
  * */
-
+//남은것 : '쿠폰' 값 늘리기. / 쓰레딩 / 예외처리 수정
 
 public class main {
 
@@ -11,8 +11,12 @@ public class main {
 		// TODO Auto-generated method stub
 		Data_menu rest = new Data_menu();
 		rest.start();
-
-		// 
+//		Data_control test = new Data_control();
+//		test.file_find(11);
+//		test.file_delete(111);// 삭제 테스트
+//		test.file_countplus(3);
+		
+		
 		
 	}
 
