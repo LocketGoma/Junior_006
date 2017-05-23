@@ -174,10 +174,7 @@ public class Data_control {		// 다시짭시다.
 			System.out.println("가입일:"+temp.birth);
 			System.out.println("번호 :: "+temp.user_num);			
 	}
-	public void file_countplus(){			//카운트값 1 올려주는거.
-		//find+rewrite
 
-	}
 	public void user_read(String buffer){		//파싱 끗.
 //		System.out.println("도달확인, 길이 : "+buffer.length());
 		int count=0;
@@ -272,7 +269,7 @@ public class Data_control {		// 다시짭시다.
 			System.out.println("삭제될 데이터가 없습니다");
 	}
 	
-	public int file_countplus(int code){	//delete하고 유사.
+	public int file_countplus(int code){	//카운트값 1 올려주는거. delete하고 유사.
 		System.out.println("늘려줄 번호"+code);
 		BufferedReader br=null;
 		FileWriter fw=null;
@@ -335,5 +332,7 @@ public class Data_control {		// 다시짭시다.
 		return 0;
 	}
 	
-	
+	public void file_edit(int code){		//허미 시붤...
+		
+	}
 }

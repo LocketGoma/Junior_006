@@ -135,6 +135,15 @@ class Action_mouse implements MouseListener{
 		catch (NullPointerException ex){
 			;
 		}
+		try{
+		if(e.getSource()==rest.bbt_delete){
+			find=new Data_finder();
+			find.deleter(Integer.parseInt(rest.tf_delete.getText()));
+			}
+		}
+		catch (NullPointerException ex){
+			;
+		}
 		
 	}
 

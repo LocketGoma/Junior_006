@@ -3,7 +3,7 @@
  * main-->data_menu(메인 로직클래스)->[UI_rest]
  * 			ㄴData_control(데이터클래스) ㄴAction_compound
  * */
-//남은것 : '쿠폰' 값 늘리기. / 쓰레딩 / 예외처리 수정
+//남은것 : 사용자 수정 / 쓰레딩 / 예외처리 수정 (몇개 안남음)
 
 public class main {
 

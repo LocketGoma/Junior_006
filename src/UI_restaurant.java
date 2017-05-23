@@ -119,10 +119,19 @@ public class UI_restaurant extends JFrame {
 	
 
 	
+	@SuppressWarnings("unchecked")
 	private void select_menu(){			//ÁÖ¹® ¸Ş´º ¼±ÅÃ
-		select_menu.addItem("±è¹ä");
+		select_menu.addItem("¾ßÃ¤±è¹ä");
+		select_menu.addItem("ÂüÄ¡±è¹ä");
+		select_menu.addItem("¼Ò°í±â±è¹ä");
 		select_menu.addItem("¶±ººÀÌ");
+		select_menu.addItem("Ä¡Áî¶±ººÀÌ");
+		select_menu.addItem("¼ø´ë");
+		select_menu.addItem("¼öÁ¦µ·±î½º");
+		select_menu.addItem("Ä¡Áîµ·±î½º");
+		select_menu.addItem("¹°¸¸µÎ");
 		select_menu.addItem("ÅÁ¼öÀ°");
+		select_menu.addItem("±èÄ¡ÇÇÀÚÅÁ¼öÀ°");
 		select_menu.setBackground(new Color(255, 255, 255));
 		
 		select_menu.setEditable(false);
