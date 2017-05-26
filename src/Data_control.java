@@ -121,6 +121,8 @@ public class Data_control {		// 다시짭시다.
 		finally {
 			if(fr!=null)try{fr.close();}catch(IOException e){}
 		}
+		
+		System.out.println("포지션 리턴::"+positon);
 		return positon+1;
 		
 		
@@ -328,11 +330,73 @@ public class Data_control {		// 다시짭시다.
 			return 1;
 		}
 		else
-			System.out.println("삭제될 데이터가 없습니다");
+			System.out.println("문제가 발생하였습니다.");
 		return 0;
 	}
 	
-	public void file_edit(int code){		//허미 시붤...
+	public int file_edit(int code,Object_user change) throws InterruptcodeException{		//허미 시붤...
+		//int code = change.getUser_num();
+		// code = 수정될 회원번호					// 지금은 아냐
+		// change = 수정될 정보.
+//		if (code != change.getUser_num()){
+//			throw new InterruptcodeException(code);
+//		}
 		
+//		System.out.println("수정될 번호"+code);
+		BufferedReader br=null;
+		FileWriter fw=null;
+
+		int postion = this.file_find(code);
+		System.out.println("포지션 위치"+postion);
+		int nowline=1;
+		
+		if(postion!=0){
+			try {
+				br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));			
+			} catch (IOException e1) {
+				// TODO 자동 생성된 catch 블록
+				e1.printStackTrace();
+			}
+		String temp="";
+		String line="";
+		String changed="";
+			try {
+				while ((line=br.readLine())!=null){
+					System.out.println(line);
+					if(postion==nowline){				//-- 수정필요
+						user_read(line);
+						System.out.println("확인");
+						temp_user=getTemp_user();
+						setTemp_user(null);
+						//setTemp_user(temp_user);
+						changed=change.getUser_num()+"#"+change.getName()+"#"+change.getPhnum()+"#"+change.getBirth()+"#"+change.getUse_count()+"#";
+						
+						
+						temp+=(changed+"\r\n");
+						
+					}
+					else
+						temp+=(line+"\r\n");
+									
+					nowline++;
+				}			
+				System.out.println("temp:"+temp+"temp 끝");
+				fw = new FileWriter(file_addr);
+				System.out.println("temp:"+temp+"temp 끝");
+				fw.write(temp);
+				System.out.println("temp:"+temp+"temp 끝");
+			} catch (IOException e) {
+				// TODO 자동 생성된 catch 블록
+				e.printStackTrace();
+			} catch (NullPointerException e){
+				e.printStackTrace();
+			}finally{
+				try{fw.close();}catch(IOException e){}
+			}
+			return 1;
+		}
+		else
+			System.out.println("문제가 발생하였습니다.");
+		return 0;
 	}
 }

@@ -30,6 +30,7 @@ public class UI_restaurant extends JFrame {
 	JMenu bt_user;			
 	JMenuItem bt_join;		//이것들 전부 새창에다 띄울거임.
 	JMenuItem bt_find;		//찾기	<- 어케 띄울거냐고? 걍 텍스트필드로 뿌릴건데?
+	JMenuItem bt_edit;
 	JMenuItem bt_delete;	//삭제
 	
 	/*주문 파트*/
@@ -61,6 +62,13 @@ public class UI_restaurant extends JFrame {
 	JTextField tf_find;
 	JButton bbt_find;
 	
+		/*정보 수정 파트*/ // = 검색 + 회원등록
+	JFrame fm_edit;
+	JTextField tf_edit;
+	JButton bbt_edit;
+	UI_edit editer;
+	boolean edit_switch=false;
+	
 		/*삭제 파트*/
 	JFrame fm_delete;
 	JTextField tf_delete;
@@ -71,6 +79,8 @@ public class UI_restaurant extends JFrame {
 	}
 	public UI_restaurant(Data_menu master){
 		this.master=master;
+		
+		//editer=new UI_edit(master);
 	}
 	
 	public void start(){
@@ -100,15 +110,18 @@ public class UI_restaurant extends JFrame {
 		
 		bt_find = new JMenuItem("고객검색");
 		bt_join = new JMenuItem("신규가입");
+		bt_edit = new JMenuItem("정보수정");
 		bt_delete = new JMenuItem("탈퇴메뉴");
 		
 		bt_find.addActionListener(new Action_compound(this));
 		bt_join.addActionListener(new Action_compound(this));
+		bt_edit.addActionListener(new Action_compound(this));
 		bt_delete.addActionListener(new Action_compound(this));
 		
 		
 		bt_user.add(bt_find);
 		bt_user.add(bt_join);
+		bt_user.add(bt_edit);
 		bt_user.add(bt_delete);		
 		
 		menubar.add(bt_order);
@@ -193,6 +206,19 @@ public class UI_restaurant extends JFrame {
 		System.out.println("출력테스트");
 		
 	}
+	public void call_edit(){
+		System.out.println("에디트 콜 2");
+		edit_switch=true;
+		this.call_find();		
+	}
+	public void call_editer(Object_user temp,int code){
+		System.out.println("에디트 콜 3");	
+		editer=new UI_edit(master,temp,code);
+	}
+	public void set_editer(){
+		System.out.println("에디트 콜 0");
+		edit_switch=false;
+	}
 	public void call_find(){
 		fm_find.setVisible(true);
 	}
@@ -244,9 +270,10 @@ public class UI_restaurant extends JFrame {
 
 }
 
+@SuppressWarnings("serial")
 class UI_Join extends JFrame{
 Data_menu master;			//상위 클래스.
-	//가입창 전용 class, 한번만 씁니다만.
+	//가입창 전용 class, 한번만 씁니다만. <- 안이야 수정할때도 쓸거야
 JTextField input_code;
 JTextField input_name;
 JTextField input_phnum;
@@ -262,14 +289,14 @@ JButton bt_join;
 		this.master=master;
 		this.start();
 	}
-	private void start(){
+	protected void start(){
 		this.setLayout(new BorderLayout());
 		this.set_layout();
 		this.setSize(400,300);
 		this.setVisible(true);
 		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-	private void set_layout(){
+	protected void set_layout(){
 		pn_main=new JPanel();
 		pn_main.setLayout(grid);
 		bt_join=new JButton("초고속즉시가입하기");
@@ -298,25 +325,23 @@ JButton bt_join;
 		add("South",bt_join);
 		
 	}
-	private void set_code(){
+	protected void set_code(){
 		input_code = new JTextField(4);
 		input_code.setHorizontalAlignment(JTextField.CENTER);
 		input_code.setText("0000");	
 	}
-	private void set_name(){
+	protected void set_name(){
 		input_name = new JTextField(10);
 		input_name.setHorizontalAlignment(JTextField.CENTER);
 		input_name.setText("김핫산");	
 	}
-
-	private void set_phnum(){
+	protected void set_phnum(){
 		input_phnum = new JTextField(13);
 		input_phnum.setHorizontalAlignment(JTextField.CENTER);
 		input_phnum.setText("000-0000-0000");	
 	}
-
 	@SuppressWarnings("deprecation")
-	private void set_date(){			//deprecation 문제되면 걍 빼면 그만;
+	protected void set_date(){			//deprecation 문제되면 걍 빼면 그만;
 		Date now = new Date();
 		String date;
 		date = now.getYear()+"/"+now.getMonth()+"/"+now.getDate();
@@ -324,7 +349,72 @@ JButton bt_join;
 		input_date.setHorizontalAlignment(JTextField.CENTER);
 		input_date.setText(date);	
 	}
+}
 
+@SuppressWarnings("serial")
+class UI_edit extends UI_Join{
+int code;
+Data_menu master;
+Object_user temp;
+JButton bt_join;
+
+	public UI_edit(Data_menu master){
+		this.master=master;
+	}
+	public UI_edit(Data_menu master, int code){
+		this.master=master;
+		this.code = code;
+	}
+	public UI_edit(Data_menu master, Object_user temp){
+		this.master=master;
+		this.temp = temp;
+	}
+	public UI_edit(Data_menu master, Object_user temp,int code){
+		System.out.println("에디트 콜 4");
+		this.master = master;
+		this.code = code;
+		this.temp = temp;
+	//	this.set_layout();					// 이걸 켜면 edit.bbt_join을 인식못하고
+	//	this.start();						// <- 이게 문제임. 이걸 켜면 master에 null이...
+	}
+	protected void start(){
+		System.out.println("작동 확인중");
+		this.setLayout(new BorderLayout());
+		this.set_layout();
+		this.setSize(400,300);
+		this.setVisible(true);
+		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
 	
-	
+	protected void set_layout(){				// 여기서도 master = null
+		System.out.println("에디트 콜 6");
+		if (master!=null)					
+			System.out.println("에디트 콜 7");
+		pn_main=new JPanel();
+		pn_main.setLayout(grid);
+		bt_join=new JButton("회원 정보 수정");
+		bt_join.addMouseListener(new Action_mouse(this,master));		
+		
+		this.set_code();
+		this.set_name();
+		this.set_phnum();
+		this.set_date();
+		JLabel label_code = new JLabel("고객번호");
+		JLabel label_name = new JLabel("고객명");
+		JLabel label_phnum = new JLabel("전화번호");
+		JLabel label_date = new JLabel("가입일"); // Auto.
+		
+		
+		pn_main.add(label_code);
+		pn_main.add(input_code);
+		pn_main.add(label_name);
+		pn_main.add(input_name);
+		pn_main.add(label_phnum);
+		pn_main.add(input_phnum);
+		pn_main.add(label_date);
+		pn_main.add(input_date);
+		
+		add("Center",pn_main);
+		add("South",bt_join);
+	}
 }

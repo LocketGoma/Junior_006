@@ -22,7 +22,7 @@ public class Data_menu {
 	}
 	
 
-	public void set_userdata(String name,String phnum,String birth,String usernumber){
+	public void set_userdata(String name,String phnum,String birth,String usernumber,boolean edit){
 		//테스트
 		
 		//valid_phnum(phnum);
@@ -43,13 +43,14 @@ public class Data_menu {
 		}
 		else
 		*/
+		System.out.println("들어가니?");
 		try{
 			valid_phnum(phnum);
 			valid_code(usernumber);
 			valid_name(name);
 			valid_birth(birth);
 			
-			order_usersave(name,phnum,birth,Integer.parseInt(usernumber));		//다 통과해야 들여보내줌. ㅎ
+			order_usersave(name,phnum,birth,Integer.parseInt(usernumber),edit);		//다 통과해야 들여보내줌. ㅎ
 		}	catch (FormatenotcorrectException e){		//1,3 동시에 캐치됨.
 			JOptionPane.showMessageDialog(frm, "에러:잘못된 입력입니다.", "입력에러", JOptionPane.ERROR_MESSAGE);
 		} catch (OverSizeException e) {					
@@ -61,7 +62,8 @@ public class Data_menu {
 //		
 		
 	}
-	public void order_usersave(String name,String phnum,String birth,int user_num){
+	public void order_usersave(String name,String phnum,String birth,int user_num,boolean edit){
+		//edit = 에디터인지 아닌지
 		temp_user = new Object_user();		
 		System.out.println("파싱 데이터::");
 		System.out.println("이름:"+name);
@@ -77,7 +79,9 @@ public class Data_menu {
 			temp_user.setUser_num(user_num);		
 		//다음에 이걸 Data_control에 넘겨서 저장시키면 되는것.
 		//테스트구문
-		
+			if (edit==true)
+			fileio.file_edit(user_num, temp_user);	
+			else if(edit==false)
 			fileio.file_write(temp_user);
 		}catch (InterruptcodeException e){		//예외처리
 		JOptionPane.showMessageDialog(frm, "에러:이미 존재하는 사용자입니다", "입력에러", JOptionPane.ERROR_MESSAGE);			
@@ -135,6 +139,8 @@ public class Data_menu {
 		}	
 	}
 	static void valid_birth(String birth)throws DateFormatnotcorrectException{	//가입일 번호 유효 검사. 다시 만들것.
+		if (birth.length()!=10)
+			throw new DateFormatnotcorrectException(birth.charAt(5));
 		for(int i =0 ; i <birth.length() ; i ++){
 			System.out.println("검사:"+birth.charAt(i)+"(int):"+(int)birth.charAt(i));
 			if(birth.charAt(i)==47){
@@ -204,16 +210,17 @@ class Data_finder {
 //		//break;
 //	}
 	public void start(){
-		JOptionPane.showMessageDialog(frm, "안내:검색중입니다.", "안내", JOptionPane.PLAIN_MESSAGE);		
 		this.finder();
-		
+		JOptionPane.showMessageDialog(frm, "안내:검색중입니다.", "안내", JOptionPane.PLAIN_MESSAGE);		
 		this.printer(fileio.getTemp_user());
-	}
-	private int finder(){
+	}	
+	public int finder(){
 		int postion=-1;				//몇번째에 저장되어있는가. <- 못 찾으면 -1리턴 = 에러
-		fileio.file_find(code);
-		
+		postion=fileio.file_find(code);		
 		return postion;
+	}
+	public Object_user giver(){
+		return fileio.getTemp_user();
 	}
 	public void printer(Object_user user){
 		pn_print = new JPanel();
@@ -235,5 +242,9 @@ class Data_finder {
 		fileio.file_delete(code);
 	}
 	
+	public static void editer(int code, int edit) throws InterruptcodeException{
+		if (code!=edit)
+			new InterruptcodeException(code);		
+	}
 	
 }
