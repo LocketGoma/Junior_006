@@ -271,7 +271,7 @@ public class UI_restaurant extends JFrame {
 }
 
 @SuppressWarnings("serial")
-class UI_Join extends JFrame{
+class UI_Join extends JFrame{				//얘는 완성된 코드니까 노-터치
 Data_menu master;			//상위 클래스.
 	//가입창 전용 class, 한번만 씁니다만. <- 안이야 수정할때도 쓸거야
 JTextField input_code;
@@ -352,12 +352,18 @@ JButton bt_join;
 }
 
 @SuppressWarnings("serial")
-class UI_edit extends UI_Join{
+//class UI_edit extends UI_Join{						//그냥 Edit 누르면 이거 출력하게 만들면 되는거 아닐까
+class UI_edit extends JFrame{						//그냥 Edit 누르면 이거 출력하게 만들면 되는거 아닐까
 int code;
 Data_menu master;
+JTextField input_code;
+JTextField input_name;
+JTextField input_phnum;
+JTextField input_date;
+JPanel pn_main;	
 Object_user temp;
-JButton bt_join;
-
+JButton bt_edit;
+GridLayout grid = new GridLayout(4,2);
 	public UI_edit(Data_menu master){
 		this.master=master;
 	}
@@ -374,8 +380,8 @@ JButton bt_join;
 		this.master = master;
 		this.code = code;
 		this.temp = temp;
-	//	this.set_layout();					// 이걸 켜면 edit.bbt_join을 인식못하고
-	//	this.start();						// <- 이게 문제임. 이걸 켜면 master에 null이...
+	//	this.set_layout();					// 이걸 켜면 edit.bt_join을 인식못하고
+		this.start();						// <- 이게 문제임. 이걸 켜면 master에 null이...
 	}
 	protected void start(){
 		System.out.println("작동 확인중");
@@ -392,8 +398,8 @@ JButton bt_join;
 			System.out.println("에디트 콜 7");
 		pn_main=new JPanel();
 		pn_main.setLayout(grid);
-		bt_join=new JButton("회원 정보 수정");
-		bt_join.addMouseListener(new Action_mouse(this,master));		
+		bt_edit=new JButton("회원 정보 수정");
+		bt_edit.addMouseListener(new Action_mouse(this,master));		
 		
 		this.set_code();
 		this.set_name();
@@ -415,6 +421,32 @@ JButton bt_join;
 		pn_main.add(input_date);
 		
 		add("Center",pn_main);
-		add("South",bt_join);
+		add("South",bt_edit);
+	}
+
+
+	protected void set_code(){
+		input_code = new JTextField(4);
+		input_code.setHorizontalAlignment(JTextField.CENTER);
+		input_code.setText("0000");	
+	}
+	protected void set_name(){
+		input_name = new JTextField(10);
+		input_name.setHorizontalAlignment(JTextField.CENTER);
+		input_name.setText("김핫산");	
+	}
+	protected void set_phnum(){
+		input_phnum = new JTextField(13);
+		input_phnum.setHorizontalAlignment(JTextField.CENTER);
+		input_phnum.setText("000-0000-0000");	
+	}
+	@SuppressWarnings("deprecation")
+	protected void set_date(){			//deprecation 문제되면 걍 빼면 그만;
+		Date now = new Date();
+		String date;
+		date = now.getYear()+"/"+now.getMonth()+"/"+now.getDate();
+		input_date = new JTextField();
+		input_date.setHorizontalAlignment(JTextField.CENTER);
+		input_date.setText(date);	
 	}
 }

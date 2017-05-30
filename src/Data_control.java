@@ -1,15 +1,11 @@
 // 이 친구는 파일 IO만 담당합니다.
 import java.io.BufferedReader;
-import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.StreamCorruptedException;
 public class Data_control {		// 다시짭시다.
 	static int bonus=2;					//보너스를 이전 몇번째 누적 주문때 줄것인가. (2 = 3번째 주문때 지급)
 	

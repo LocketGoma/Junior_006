@@ -98,12 +98,19 @@ class Action_mouse implements MouseListener{
 		System.out.println("에디트 콜 8");
 		this.edit=edit;
 		this.master=master;
+		if (this.master==null)
+		System.out.println("왜 없냐");
+		else
+		System.out.println("okay");
+		
 	}
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO 자동 생성된 메소드 스텁
+		System.out.println(e.getID());
 		System.out.println(e.getSource());
+		try{		System.out.println(edit.bt_edit);}catch(Exception ex){ex.getMessage();}
 		try{
 			if(e.getSource()==rest.bt_orderby){			// 주문
 			System.out.println("작동확인1");	
@@ -118,6 +125,7 @@ class Action_mouse implements MouseListener{
 		}
 		try{
 			if(e.getSource()==join.bt_join){			// 가입
+				System.out.println("저장");
 				try{master.set_userdata(join.input_name.getText(),join.input_phnum.getText(),join.input_date.getText(),join.input_code.getText(),false);
 				}
 				catch(Exception ex){
@@ -163,14 +171,22 @@ class Action_mouse implements MouseListener{
 			;
 		}
 		try{
-			if(e.getSource()==edit.bt_join){
+			if(e.getSource()==edit.bt_edit){
 				System.out.println("수정시작");
+				
 				if (master==null)
 				System.out.println("뭔가 잘못됐는데");
+				else
+				System.out.println("okay. 마스터 있음.");
+					
+				
 				try{
 					Data_finder.editer(edit.code,Integer.parseInt(edit.input_code.getText()));				//틀리면 인터럽트 퉷
 					System.out.println("수정체크");					
-					master.set_userdata(join.input_name.getText(),join.input_phnum.getText(),join.input_date.getText(),join.input_code.getText(),true);
+					//master.edit_userdata();
+					master.set_userdata(edit.input_name.getText(),edit.input_phnum.getText(),edit.input_date.getText(),edit.input_code.getText(),true);
+					System.out.println("에디트 콜 11");					
+					
 				}
 				catch (InterruptcodeException ex){
 					ex.getMessage();
@@ -179,12 +195,12 @@ class Action_mouse implements MouseListener{
 					ex.getMessage();
 				}												//코드 받아오기가 문제.				
 				
-//				System.out.println("코드 확인 :"+ edit.code);	// 비교는 할수 있을거 같고.
-//				if(Integer.parseInt(edit.input_code.getText())!=edit.code){		//비교 되고. 
-//					System.out.println("다른데요!")
-//					;
-//				}
-			//	
+				System.out.println("코드 확인 :"+ edit.code);	// 비교는 할수 있을거 같고.
+				if(Integer.parseInt(edit.input_code.getText())!=edit.code){		//비교 되고. 
+					System.out.println("다른데요!")
+					;
+				}
+				
 			}
 		}
 		catch (NullPointerException ex){

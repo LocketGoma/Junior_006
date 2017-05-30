@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+
 //내부 로직파트
 public class Data_menu {
 	UI_restaurant rest;			//바로 불러오기.
@@ -45,15 +46,15 @@ public class Data_menu {
 		*/
 		System.out.println("들어가니?");
 		try{
-			valid_phnum(phnum);
 			valid_code(usernumber);
+			valid_phnum(phnum);			
 			valid_name(name);
 			valid_birth(birth);
 			
 			order_usersave(name,phnum,birth,Integer.parseInt(usernumber),edit);		//다 통과해야 들여보내줌. ㅎ
 		}	catch (FormatenotcorrectException e){		//1,3 동시에 캐치됨.
 			JOptionPane.showMessageDialog(frm, "에러:잘못된 입력입니다.", "입력에러", JOptionPane.ERROR_MESSAGE);
-		} catch (OverSizeException e) {					
+		} 	catch (OverSizeException e) {					
 			// TODO 자동 생성된 catch 블록
 			JOptionPane.showMessageDialog(frm, "에러:입력길이가 초과되었습니다.", "입력에러", JOptionPane.ERROR_MESSAGE);
 		} 
@@ -72,15 +73,16 @@ public class Data_menu {
 		System.out.println("번호 :: "+user_num);
 		
 		try{
-			check_code(user_num);		
+			if (edit!=true)check_code(user_num);		
 			temp_user.setName(name);		
 			temp_user.setBirth(birth);
 			temp_user.setPhnum(phnum);
 			temp_user.setUser_num(user_num);		
 		//다음에 이걸 Data_control에 넘겨서 저장시키면 되는것.
 		//테스트구문
-			if (edit==true)
-			fileio.file_edit(user_num, temp_user);	
+			if (edit==true){
+				System.out.println("에디트 콜 13");		
+			fileio.file_edit(user_num, temp_user);}	
 			else if(edit==false)
 			fileio.file_write(temp_user);
 		}catch (InterruptcodeException e){		//예외처리
@@ -89,7 +91,7 @@ public class Data_menu {
 		temp_user=null;		
 	}
 	public void edit_userdata(){		//시발... 이게 숨어있을줄이야
-		
+
 	}
 	
 	
@@ -178,73 +180,5 @@ public class Data_menu {
 	}
 	
 	
-	
-}
-
-//일단 멀티스레드 안쓰는거로 구현하고...
-//class Data_finder implements Runnable{
-class Data_finder {	
-	Object_user temp_user;	//임시 저장형.
-	Data_control fileio;	//그래서 검색은 어떻게? <- 걍 무식하게 object 다 긁을건데!
-	int code;				//찾을 코드.
-	private JFrame frm = new JFrame();		// 안내문구 출력용.
-	private JFrame fr_print = new JFrame();
-	private JPanel pn_print;
-	private JTextArea ta_print;
-//	private JLabel lb_print;
-//	private JButton bt_print;
-	
-	Data_finder(){	
-		fileio = new Data_control(this);
-	}
-	Data_finder(int code){
-		this.code=code;
-		fileio = new Data_control(this);
-	}
-//	@Override
-//	public void run() {
-//		// TODO 자동 생성된 메소드 스텁
-//		JOptionPane.showMessageDialog(frm, "안내:검색중입니다.", "안내", JOptionPane.PLAIN_MESSAGE);		
-//		
-//		this.finder();
-//		//break;
-//	}
-	public void start(){
-		this.finder();
-		JOptionPane.showMessageDialog(frm, "안내:검색중입니다.", "안내", JOptionPane.PLAIN_MESSAGE);		
-		this.printer(fileio.getTemp_user());
-	}	
-	public int finder(){
-		int postion=-1;				//몇번째에 저장되어있는가. <- 못 찾으면 -1리턴 = 에러
-		postion=fileio.file_find(code);		
-		return postion;
-	}
-	public Object_user giver(){
-		return fileio.getTemp_user();
-	}
-	public void printer(Object_user user){
-		pn_print = new JPanel();
-		ta_print = new JTextArea();
-		if (user!=null){
-			ta_print.append("이름:"+user.getName()+'\n');
-			ta_print.append("회원번호:"+user.getUser_num()+'\n');
-			ta_print.append("전화번호:"+user.getPhnum()+'\n');
-			ta_print.append("가입일:"+user.getBirth());			
-		}
-		else
-			ta_print.append("알림 : 존재하지 않는\n사용자입니다.");
-		fr_print.setSize(150, 120);
-		pn_print.add(ta_print);
-		fr_print.add(pn_print);
-		fr_print.setVisible(true);
-	}
-	public void deleter(int code){
-		fileio.file_delete(code);
-	}
-	
-	public static void editer(int code, int edit) throws InterruptcodeException{
-		if (code!=edit)
-			new InterruptcodeException(code);		
-	}
 	
 }
