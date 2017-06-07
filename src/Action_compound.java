@@ -8,6 +8,8 @@ import java.awt.event.MouseListener;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
+import com.sun.org.glassfish.external.statistics.annotations.Reset;
+
 //모든 액션을 다 때려박습니다.
 public class Action_compound implements ActionListener, MenuListener {
 	UI_restaurant rest;			//바로 불러오기.
@@ -70,6 +72,10 @@ public class Action_compound implements ActionListener, MenuListener {
 			System.out.println("에디트 콜 1");
 			rest.call_edit();
 		}
+		else if(e.getSource()==rest.bt_log){
+			System.out.println("실행확인");
+			rest.call_log();
+		}
 		
 	}
 	
@@ -81,6 +87,7 @@ class Action_mouse implements MouseListener{
 	Data_menu master;
 	Data_finder find;
 	UI_edit edit;
+	UI_log log;
 	int code;
 	
 	Action_mouse(UI_restaurant rest){
@@ -104,6 +111,10 @@ class Action_mouse implements MouseListener{
 		System.out.println("okay");
 		
 	}
+	Action_mouse(UI_log log, Data_menu master){
+		this.log=log;
+		this.master=master;
+	}
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -115,6 +126,8 @@ class Action_mouse implements MouseListener{
 			if(e.getSource()==rest.bt_orderby){			// 주문
 			System.out.println("작동확인1");	
 			master.print_usertype(Integer.parseInt(rest.input_addr.getText()));
+			System.out.println((String)rest.select_menu.getSelectedItem());
+			master.order_write(rest.ftf.getText(),(String)rest.select_menu.getSelectedItem());
 			}
 		}
 		catch(NullPointerException ex){
@@ -171,7 +184,7 @@ class Action_mouse implements MouseListener{
 			;
 		}
 		try{
-			if(e.getSource()==edit.bt_edit){
+			if(e.getSource()==edit.bt_edit){				//에디터
 				System.out.println("수정시작");
 				
 				if (master==null)
@@ -215,6 +228,14 @@ class Action_mouse implements MouseListener{
 		catch (NullPointerException ex){
 			;
 		}
+		try{
+		if(e.getSource()==log.bt_search){
+			log.set_midtext(master.order_read(log.date_start.getText(), log.date_end.getText()));
+			}
+		}catch (NullPointerException ex){
+			;
+		}
+		
 		
 	}
 

@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +15,7 @@ import javax.swing.event.*;
 // UI 부분만 담당.
 // 메인 클래스긴 합니다.
 // 아니 스윙 가르쳐주지도않고 스윙쓰시는건 좀 아니잖아욬ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ
+@SuppressWarnings("serial")
 public class UI_restaurant extends JFrame {
 	Data_menu master;			//상위 클래스.
 	
@@ -27,7 +29,8 @@ public class UI_restaurant extends JFrame {
 	/*상단 메뉴 바 관련*/
 	JMenuBar menubar;
 	JMenu bt_order;
-	JMenu bt_user;			
+	JMenu bt_user;
+	JMenuItem bt_log;
 	JMenuItem bt_join;		//이것들 전부 새창에다 띄울거임.
 	JMenuItem bt_find;		//찾기	<- 어케 띄울거냐고? 걍 텍스트필드로 뿌릴건데?
 	JMenuItem bt_edit;
@@ -39,7 +42,8 @@ public class UI_restaurant extends JFrame {
 	JTextField input_number;
 	SpinnerDateModel model = new SpinnerDateModel(now,now,null,Calendar.DAY_OF_WEEK);	//현재 기준, 현재~미래
 	JSpinner spin = new JSpinner(model);
-	
+	JSpinner.DateEditor edit;
+	JFormattedTextField ftf;
 	
 		/*회원번호 부분*/
 	JTextField input_addr;
@@ -73,6 +77,10 @@ public class UI_restaurant extends JFrame {
 	JFrame fm_delete;
 	JTextField tf_delete;
 	JButton bbt_delete;
+	
+	/*주문관리 파트*/
+	UI_log orderlog;
+	
 	
 	public UI_restaurant(){
 		//this.set_join();    <- 얘가 작동함 = 액션리스너 문제임. :: 작동합니다 = 액션리스너 문제입니다.
@@ -108,6 +116,8 @@ public class UI_restaurant extends JFrame {
 		bt_order=new JMenu("주문관리");
 		bt_user=new JMenu("고객관리");
 		
+		bt_log=new JMenuItem("내역관리");
+		
 		bt_find = new JMenuItem("고객검색");
 		bt_join = new JMenuItem("신규가입");
 		bt_edit = new JMenuItem("정보수정");
@@ -118,6 +128,7 @@ public class UI_restaurant extends JFrame {
 		bt_edit.addActionListener(new Action_compound(this));
 		bt_delete.addActionListener(new Action_compound(this));
 		
+		bt_log.addActionListener(new Action_compound(this));
 		
 		bt_user.add(bt_find);
 		bt_user.add(bt_join);
@@ -126,7 +137,8 @@ public class UI_restaurant extends JFrame {
 		
 		menubar.add(bt_order);
 		menubar.add(bt_user);
-		menubar.add(bt_join);
+		menubar.add(bt_log);
+//		menubar.add(bt_join);
 		setJMenuBar(menubar);
 	}
 	
@@ -150,8 +162,8 @@ public class UI_restaurant extends JFrame {
 		select_menu.setEditable(false);
 	}
 	private void set_data_spindel(){		//날짜 선택메뉴.
-		JSpinner.DateEditor edit = new JSpinner.DateEditor(spin, "yyyy/MM/dd");
-		JFormattedTextField ftf = edit.getTextField();
+		edit = new JSpinner.DateEditor(spin, "yyyy-MM-dd");
+		ftf = edit.getTextField();
         ftf.setEditable(true);
         ftf.setHorizontalAlignment(JTextField.CENTER);
         ftf.setBackground(new Color(255, 255, 255));
@@ -266,7 +278,10 @@ public class UI_restaurant extends JFrame {
 		
 	}
 	
-
+	public void call_log(){
+		orderlog=new UI_log(master);
+		orderlog.start();
+	}
 
 }
 
@@ -449,4 +464,94 @@ GridLayout grid = new GridLayout(4,2);
 		input_date.setHorizontalAlignment(JTextField.CENTER);
 		input_date.setText(date);	
 	}
+}
+
+@SuppressWarnings("serial")
+class UI_log extends JFrame{
+Data_menu master;
+JTextArea menu_log=new JTextArea(10,25);		//로그 뿌려질 곳
+String log_buffer;			//로그 버퍼
+
+JTextField date_start;
+JTextField date_end;
+
+
+JPanel pn_high;				//날짜 두개
+JPanel pn_middle;			//메뉴 로그
+JPanel pn_low;				//버튼들
+
+JButton bt_search;				//검색
+JButton bt_exit;				//작동하려나. 일단 안넣음.
+
+	public UI_log(){
+		
+	}
+	public UI_log(Data_menu master){
+		this.master=master;
+	}
+	public void start(){
+		this.set_layout();
+		
+		try {
+			Thread.sleep(2000);
+			this.set_midtext("hi");
+		} catch (InterruptedException e) {
+			// TODO 자동 생성된 catch 블록
+			e.printStackTrace();
+		}
+		
+	}
+	private void set_layout(){
+		this.setLayout(new BorderLayout());
+		this.set_high();
+		this.set_middle();
+		this.set_low();
+		
+		add("North",pn_high);
+		add("Center",pn_middle);
+		add("South",pn_low);
+		
+		this.setSize(400, 300);
+		
+		this.setVisible(true);
+	}
+	private void set_high(){
+		JLabel date=new JLabel("날짜 :: ");
+		JLabel andmark=new JLabel("~");
+		JLabel end = new JLabel("까지");
+		date_start=new JTextField("0000-00-00");
+		date_end = new JTextField("0000-00-00");		
+		pn_high=new JPanel();
+		pn_high.setLayout(new FlowLayout());
+		
+		pn_high.add(date);
+		pn_high.add(date_start);
+		pn_high.add(andmark);
+		pn_high.add(date_end);
+		pn_high.add(end);
+	
+	}
+	private void set_middle(){
+		pn_middle = new JPanel();
+		
+		
+		pn_middle.add(menu_log);
+		
+	}
+	public void set_midtext(String buffer){
+		menu_log.setText("메뉴         회수               매출금액\n==========================\n");
+		menu_log.append(buffer);
+	}
+	
+	private void set_low(){
+		pn_low = new JPanel();
+		bt_search = new JButton("검색");
+		
+		bt_search.addMouseListener(new Action_mouse(this,master));
+		
+		
+		pn_low.add(bt_search);
+	}
+	
+	
 }

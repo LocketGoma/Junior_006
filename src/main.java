@@ -16,8 +16,16 @@ public class main {
 //		test.file_delete(111);// »èÁ¦ Å×½ºÆ®
 //		test.file_countplus(3);
 //		Data_ordercontrol order = new Data_ordercontrol();
+//		Object_order temp = new Object_order();
+//		temp.setDate("2017-05-17");
+//		temp.setMenu("¾ßÃ¤±è¹ä");
+//		order.write_order(temp);
+//		order.read_order("2017-05-17", "2017-05-17");
+//		System.out.println(order.parse_menu("2017-05-17#¼Ò°í±â±è¹ä#"));
+//		order.parse_date("2017-05-17");
 //		System.out.println(order.match_menu("ÅÁ¼öÀ°"));
-		
+//		UI_log log = new UI_log();
+//		log.start();
 		
 	}
 

@@ -12,11 +12,13 @@ public class Data_menu {
 	UI_Join join;				//Join 파트용. 얘만 다른 클래스니까.
 	Object_user temp_user=null;		//user 객체 temp
 	Data_control fileio;
+	Data_ordercontrol orderio;
 	
 	private JFrame frm = new JFrame();		// 에러문구 출력용.
 	Data_menu(){
 		rest=new UI_restaurant(this);
 		fileio = new Data_control();
+		orderio = new Data_ordercontrol();
 	}
 	public void start(){
 		rest.start();
@@ -94,6 +96,14 @@ public class Data_menu {
 
 	}
 	
+	public void order_write(String date, String menu){
+		System.out.println("파싱 테스트");
+		System.out.println("Date:"+date+"  menu:"+menu);
+		orderio.write_order(date, menu);
+	}
+	public String order_read(String start,String end){
+		return orderio.read_order(start, end);
+	}
 	
 	public void print_usertype(int code){
 		System.out.println("코드 확인"+code);
